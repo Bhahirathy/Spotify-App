@@ -1,0 +1,165 @@
+.bg-dark {
+    background-color: black !important;
+}
+
+
+.songItem {
+    height: 50px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.songItem img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.song-card {
+    background: transparent;
+    border: transparent;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.song-card:hover {
+    opacity: 50%;
+    /* background-color: rgba(255, 255, 255, 0.08); */
+}
+
+/* .song-card .active {
+    background-color: rgba(255, 255, 255, 0.08);
+
+} */
+
+.search {
+    border: transparent;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    /* padding: 8px 14px; */
+    color: white !important;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.searchDiv button {
+    border: transparent !important;
+}
+
+.search :focus {
+    border-color: transparent !important;
+}
+
+.search1 {
+    border-radius: 0px;
+    /* opacity: 70%; */
+    /* background: gray !important; */
+    /* background: rgba(255, 255, 255, 0.08); */
+    border-radius: 8px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+
+
+.search::-webkit-input-placeholder {
+    color: white !important;
+}
+
+.songItem img {
+    border-radius: 50%;
+}
+
+.tracks {
+    width: 60%;
+    justify-content: space-between;
+}
+
+.trackList {
+    width: 432px;
+    /* height: 856px; */
+}
+
+.tracks h4 {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 32px;
+}
+
+.logo-col {
+    margin-left: 3rem;
+}
+
+.music-card h4 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 36px;
+}
+
+.logo img {
+    height: 40px;
+    width: 133.41px;
+}
+
+.music-image {
+    width: 480px !important;
+    height: 480px !important;
+}
+
+.icons {
+    background: transparent !important;
+    border-color: transparent !important;
+}
+
+.icons :active {
+    background: transparent !important;
+    border-color: transparent !important;
+}
+
+.activeBtn {
+    opacity: 50%;
+}
+
+.fadeBtn {
+    border: none;
+    background: transparent;
+}
+
+.fadeBtn:hover {
+    border: none;
+    background: transparent;
+}
+
+.fadeBtn:active {
+    border: none;
+    background: transparent;
+}
+
+.custom-slider {
+    width: 100%;
+    opacity: 50%;
+    border: none;
+}
+
+.custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 0 !important;
+    height: 20px;
+    background-color: #cad6e3 !important;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.custom-slider::-webkit-slider-thumb {
+    appearance: none;
+}
+
+.custom-slider::-moz-range-thumb {
+    width: 0;
+}
+
+.custom-slider:disabled::-moz-range-thumb {
+    display: none;
+}
