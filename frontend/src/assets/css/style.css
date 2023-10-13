@@ -35,7 +35,7 @@
 
 .search {
     border: transparent;
-    background: rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.08) !important;
     border-radius: 8px;
     /* padding: 8px 14px; */
     color: white !important;
@@ -51,10 +51,14 @@
     border-color: transparent !important;
 }
 
+.search::-webkit-input-placeholder {
+    border-color: none !important;
+}
+
 .search1 {
     border-radius: 0px;
     /* opacity: 70%; */
-    /* background: gray !important; */
+    background: rgba(255, 255, 255, 0.08) !important;
     /* background: rgba(255, 255, 255, 0.08); */
     border-radius: 8px;
     border-top-left-radius: 0;
@@ -74,10 +78,11 @@
 .tracks {
     width: 60%;
     justify-content: space-between;
+    /* flex-wrap: wrap; */
 }
 
 .trackList {
-    width: 432px;
+    /* width: 432px; */
     /* height: 856px; */
 }
 
@@ -87,8 +92,16 @@
     line-height: 32px;
 }
 
+
 .logo-col {
-    margin-left: 3rem;
+    position: sticky;
+    /* top: 0; */
+    /* height: 100vh; */
+    /* Adjust the height as needed */
+}
+
+.logo {
+    margin-left: 2rem;
 }
 
 .music-card h4 {
@@ -119,6 +132,11 @@
 
 .activeBtn {
     opacity: 50%;
+}
+
+.ForIcons img :hover {
+
+    color: white !important;
 }
 
 .fadeBtn {
@@ -162,4 +180,62 @@
 
 .custom-slider:disabled::-moz-range-thumb {
     display: none;
+}
+
+.max-width-100 {
+    max-width: 100%;
+}
+
+.trackListItem {
+    height: calc(100vh - 100px);
+    overflow-y: scroll;
+}
+
+.responsive-image {
+    /* max-width: 100%; */
+    height: auto;
+    max-height: 480px;
+    width: 100%;
+}
+
+.fixed-image {
+    max-width: 480px;
+    max-height: 480px;
+    width: 100%;
+    /* height: auto; */
+}
+
+/* 
+@media (max-width: 768px) {
+    .fixed-image {
+        max-width: 80%;
+        max-height: 80%;
+    }
+} */
+
+@media (max-width: 576px) {
+    .fixed-image {
+        max-width: 75%;
+        max-height: 75%;
+    }
+}
+
+.profile-col {
+    /* background-color: #222; */
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.selected-card {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+.form-control::placeholder {
+    opacity: 50%;
 }
