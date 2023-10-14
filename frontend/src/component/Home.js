@@ -41,11 +41,6 @@ export default function Home() {
         setIsMuted(!isMuted);
     };
 
-    const handleVolumeChange = (event) => {
-        const newVolume = parseFloat(event.target.value);
-        audioRef.current.volume = newVolume;
-        setVolume(newVolume);
-    };
 
     const handleSliderChange = (e) => {
         const newPosition = e.target.value;
@@ -68,19 +63,11 @@ export default function Home() {
         setForYou(true)
         setClicked(false)
     }
-    const loadAudio = (songUrl) => {
-        if (audioRef.current) {
-            audioRef.current.src = songUrl;
-            audioRef.current.load(); // Load the audio
-            audioRef.current.play().catch(() => {
-                setErrorOccurred(true);
-            });
-        }
-    };
+
 
     const handleSong = (song, cover, name, artist, bgColor, index) => {
         const songIndex = data.findIndex(item => item.url === song);
-        loadAudio(song)
+        // loadAudio(song)
         setSelectedSong(song)
         setSelectedCover(cover)
         setSelectedName(name)
@@ -92,14 +79,11 @@ export default function Home() {
         console.log("song", selectedSong)
 
 
-        if (selectedSong === song) {
-            if (audioRef.current.paused) {
-                audioRef.current.play().catch(() => {
-                    setErrorOccurred(true);
-                });
-            } else {
-                audioRef.current.pause();
-            }
+        if (selectedSong === null) {
+            setTimeout(() => {
+                audioRef.current.play()
+
+            }, 3000)
         } else {
             setSelectedSong(song);
             audioRef.current.src = song;
@@ -123,24 +107,27 @@ export default function Home() {
     };
     const handleSearch = (e) => {
         e.preventDefault()
-        const filteredSongs = data.filter((val) =>
+        if (searchItem === '') {
+            setSearchItem("")
+            setData(data);
+        } else {
+            const filteredSongs = data.filter((val) =>
 
-            val.name.toLowerCase().includes(searchItem.toLowerCase()) ||
-            val.artist.toLowerCase().includes(searchItem.toLowerCase())
-        );
-        if (!filteredSongs) {
+                val.name.toLowerCase().includes(searchItem.toLowerCase()) ||
+                val.artist.toLowerCase().includes(searchItem.toLowerCase())
+            );
 
+            if (setSelectedSong(null)) {
+                audioRef.current.src = ''; // Clear the audio src
+                audioRef.current.pause();
+                setCurrentTime(0);
+            }
+
+            setData(filteredSongs);
         }
-        if (setSelectedSong(null)) {
-            audioRef.current.src = ''; // Clear the audio src
-            audioRef.current.pause();
-            setCurrentTime(0);
-        }
-
-        setData(filteredSongs);
 
 
-        setSearchItem("")
+        // setSearchItem("")
     }
 
     const handleVolume = (e) => {
@@ -155,6 +142,7 @@ export default function Home() {
             audioRef.current.play();
         }
         setIsPlaying(!isPlaying);
+        console.log(isPlaying)
     };
 
     const handleEnded = () => {
@@ -162,7 +150,7 @@ export default function Home() {
     };
 
     const handleOnError = () => {
-        setErrorOccurred(true); // An error occurred
+        setErrorOccurred(true);
     };
     const getApiData = () => {
         const musicApi = "https://cms.samespace.com/items/songs";
@@ -183,17 +171,26 @@ export default function Home() {
             })
 
     }
-
     useEffect(() => {
-        getApiData()
         const durations = {};
+
         data.forEach((song) => {
             const audio = new Audio(song.url);
             audio.addEventListener("loadedmetadata", () => {
                 durations[song.url] = audio.duration;
-                setSongDuration(durations);
+                setSongDuration({ ...durations });
             });
         });
+    }, [data.url])
+    // const handleUrl = (song) => {
+    //     const audio = new Audio(song)
+    //     audio.addEventListener("loadedmetadata", () => {
+    //         setSongDuration(audio.duration)
+    //     })
+    // }
+    useEffect(() => {
+        getApiData()
+
     }, [])
 
 
@@ -252,7 +249,7 @@ export default function Home() {
 
                                     return (
                                         <>
-                                            <Card key={val?.id} onClick={() => { handleSong(val?.url, val.cover, val.name, val.artist, val.accent, index) }} className={`song-card link-light ${index === selectedCard ? "selected-card" : ""}`}>
+                                            {searchItem === "" ? <Card key={val?.id} onClick={() => { handleSong(val?.url, val.cover, val.name, val.artist, val.accent, index) }} className={`song-card link-light ${index === selectedCard ? "selected-card" : ""}`}>
                                                 <div className="songItem align-items-center ">
                                                     <div className="gap-3 d-flex ">
                                                         <img src={val.cover ? imageApi + val?.cover : Loader} alt="image"></img>
@@ -262,9 +259,21 @@ export default function Home() {
                                                             <span><p className="opacity-50">{val.artist}</p></span>
                                                         </div>
                                                     </div>
-                                                    <span>{(parseFloat(songDuration[val.url] / 60).toFixed(2))}</span>
+                                                    <span >{songDuration[val.url] ? (parseFloat(songDuration[val.url] / 60).toFixed(2)) : "3.29"}</span>
                                                 </div>
-                                            </Card>
+                                            </Card> : <Card key={val?.id} onClick={() => { handleSong(val?.url, val.cover, val.name, val.artist, val.accent, index) }} className={`song-card link-light ${index === selectedCard ? "selected-card" : ""}`}>
+                                                <div className="songItem align-items-center ">
+                                                    <div className="gap-3 d-flex ">
+                                                        <img src={val.cover ? imageApi + val?.cover : Loader} alt="image"></img>
+                                                        <div >
+                                                            <span className="link-light">{val.name}</span>
+                                                            <br />
+                                                            <span><p className="opacity-50">{val.artist}</p></span>
+                                                        </div>
+                                                    </div>
+                                                    <span >{songDuration[val.url] ? (parseFloat(songDuration[val.url] / 60).toFixed(2)) : "3.29"}</span>
+                                                </div>
+                                            </Card>}
                                         </>
                                     )
                                 })) : (data?.map((val, index) => {
@@ -282,7 +291,7 @@ export default function Home() {
                                                                 <span><p className="opacity-50">{val.artist}</p></span>
                                                             </div>
                                                         </div>
-                                                        <span>{songDuration.toFixed(2)}</span>
+                                                        <span>{songDuration[val?.url] === null ? (parseFloat(songDuration[val.url] / 60).toFixed(2)) : "3.29"}</span>
                                                     </div>
                                                 </Card>
                                             </>
@@ -295,7 +304,7 @@ export default function Home() {
                         {/* </div> */}
                     </Col>
                     <Col className="bg-transparent d-flex align-items-center justify-content-center mb-5 pt-3  mt-md-5">
-                        {selectedSong && selectedCover && selectedArtist && selectedName && (< Card className="border-none  border-0 bg-transparent link-light" >
+                        {selectedSong && selectedCover && selectedArtist && selectedName && (< Card className="border-none  border-0 bg-transparent link-light music-col" >
                             <Col className="mt-3 mt-md-4">
                                 <div className="music-card  ">
                                     <h4 className="link-light">{selectedName}</h4>
@@ -303,7 +312,7 @@ export default function Home() {
                                 </div>
                             </Col>
                             <Col className="music-image justify-content-center mt-3 mb-3 ">
-                                <img src={selectedCover ? imageApi + selectedCover : Loader} alt="image" className="img-fluid fixed-image "></img>
+                                {selectedCover ? (<img src={imageApi + selectedCover} alt="image" className="img-fluid fixed-image "></img>) : <img src={Loader} alt="image" style={{ width: "30px", height: "30px" }}></img>}
                             </Col>
                             <Col>
                                 <input
